@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GPA Calculator</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Material Design fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Material Design -->
+    <link href="bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.css" rel="stylesheet">
+    <link href="bower_components/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- Dropdown.js -->
+    <link href="//cdn.rawgit.com/FezVrasta/dropdown.js/master/jquery.dropdown.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="header-panel shadow-z-2">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-12">
+            <h1 class="header">Your Friendly Neighborhood GPA Calculator</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container main">
+      <div class="row">
+        <div class="pages col-xs-12">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="well jumbotron page active" id="stats">
+                <div class="row">
+                  <div class="totals col-xs-3">
+                    <p>Total GPA:</p>
+                    <h4 class="gpa-total">3.2</h4>
+                    <div class="bottom row">
+                      <div class="col-xs-12 col-sm-6">
+                        <p class="">Credits:</p>
+                      </div>
+                      <div class="col-xs-12 col-sm-6">
+                        <p class="">123</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-9">
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <div class="pull-left">
+                            <p>Breakdown</p>
+                        </div>
+                        <div class="pull-right">
+                            <a class="btn btn-primary">Edit</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-3">
+                        <div class="row">
+                          <div class="form-group">
+                            <div class="col-md-3">
+                              <label for="inputEmail" class="control-label">A+</label>
+                            </div>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" id="inputEmail" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-3">
+                        <div class="row">
+                          <div class="form-group">
+                            <div class="col-md-3">
+                              <label for="inputEmail" class="control-label">B+</label>
+                            </div>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" id="inputEmail" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-3">
+                        <div class="row">
+                          <div class="form-group">
+                            <div class="col-md-3">
+                              <label for="inputEmail" class="control-label">C+</label>
+                            </div>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" id="inputEmail" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-3">
+                        <div class="row">
+                          <div class="form-group">
+                            <div class="col-md-3">
+                              <label for="inputEmail" class="control-label">D+</label>
+                            </div>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" id="inputEmail" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-3">
+                        <div class="row">
+                          <div class="form-group">
+                            <div class="col-md-3">
+                              <label for="inputEmail" class="control-label">A</label>
+                            </div>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" id="inputEmail" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-3">
+                        <div class="row">
+                          <div class="form-group">
+                            <div class="col-md-3">
+                              <label for="inputEmail" class="control-label">B</label>
+                            </div>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" id="inputEmail" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-3">
+                        <div class="row">
+                          <div class="form-group">
+                            <div class="col-md-3">
+                              <label for="inputEmail" class="control-label">C</label>
+                            </div>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" id="inputEmail" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-3">
+                        <div class="row">
+                          <div class="form-group">
+                            <div class="col-md-3">
+                              <label for="inputEmail" class="control-label">D</label>
+                            </div>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" id="inputEmail" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-3">
+                        <div class="row">
+                          <div class="form-group">
+                            <div class="col-md-3">
+                              <label for="inputEmail" class="control-label">A-</label>
+                            </div>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" id="inputEmail" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-3">
+                        <div class="row">
+                          <div class="form-group">
+                            <div class="col-md-3">
+                              <label for="inputEmail" class="control-label">B-</label>
+                            </div>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" id="inputEmail" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-3">
+                        <div class="row">
+                          <div class="form-group">
+                            <div class="col-md-3">
+                              <label for="inputEmail" class="control-label">C-</label>
+                            </div>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" id="inputEmail" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-3">
+                        <div class="row">
+                          <div class="form-group">
+                            <div class="col-md-3">
+                              <label for="inputEmail" class="control-label">F</label>
+                            </div>
+                            <div class="col-md-9">
+                              <input type="text" class="form-control" id="inputEmail" placeholder="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="pages col-xs-12">
+          <div class="row">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+              <div class="well page active">
+                <div class="row">
+                  <div class="col-xs-2">
+                    <h3 class=text-center>#</h3>
+                  </div>
+                  <div class="col-xs-5">
+                    <h3 class=text-center>Credits</h3>
+                  </div>
+                  <div class="col-xs-5">
+                    <h3 class=text-center>Grade</h3>
+                  </div>
+                </div>
+                <hr style="background: #666; border: 1px solid #666"/>
+                <div class="row">
+                  <div class="col-xs-2">
+                    <h3 class=text-center>1</h3>
+                  </div>
+                  <div class="col-xs-5">
+                    <h3 class=text-center>3</h3>
+                  </div>
+                  <div class="col-xs-5">
+                    <h3 class=text-center>A</h3>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-2">
+                    <h3 class=text-center>2</h3>
+                  </div>
+                  <div class="col-xs-5">
+                    <h3 class=text-center>3</h3>
+                  </div>
+                  <div class="col-xs-5">
+                    <h3 class=text-center>B+</h3>
+                  </div>
+                </div>
+                <hr style="background: #f44336"/>
+                <div class="row">
+                  <div class="col-xs-offset-2 col-xs-5">
+                    <h3 class=text-center>6</h3>
+                  </div>
+                  <div class="col-xs-5">
+                    <h3 class=text-center>3.75</h3>
+                  </div>
+                </div>
+                <div class="center-block">
+                  <button class="center-block btn btn-raised btn-success">Add semester
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a href="javascript:void(0)" class="btn btn-danger btn-fab main-button"><i class="material-icons">grade</i></a>
+
+    <!-- build:js /js/site.js -->
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <!-- endbuild -->
+
+    <!-- Material Design for Bootstrap -->
+    <script src="bower_components/bootstrap-material-design/dist/js/material.js"></script>
+    <script src="bower_components/bootstrap-material-design/dist/js/ripples.min.js"></script>
+    <script>
+      $.material.init();
+    </script>
+  </body>
+</html>

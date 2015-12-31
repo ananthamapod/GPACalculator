@@ -1,0 +1,27 @@
+{
+  "name": "GPACalculator",
+  "version": "0.0.0",
+  "authors": [
+    "Ananth Rao <ananthamapod@gmail.com>"
+  ],
+  "description": "Simple GPA Calculator web app for practice with React",
+  "main": "index.html",
+  "keywords": [
+    "gpa",
+    "calculator",
+    "react"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "react": "~0.14.3"
+  }
+}

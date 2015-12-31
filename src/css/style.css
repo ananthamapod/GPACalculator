@@ -1,0 +1,110 @@
+* {
+    box-sizing: border-box;
+}
+
+.header-panel {
+    background-color: #448AFF;
+    height: 144px;
+    position: relative;
+    z-index: 3;
+}
+
+.header-panel div {
+    position: relative;
+    height: 100%;
+}
+
+.header-panel h1 {
+    color: #FFF;
+    /*font-size: 20px;*/
+    /*font-weight: 400;*/
+    position: absolute;
+    bottom: 10px;
+    padding-left: 35px;
+}
+
+.pages {
+    z-index: 4;
+    padding: 0;
+    margin: 0 auto;
+}
+
+.pages > div {
+    padding: 0 5px;
+    padding-top: 1em;
+}
+
+.page {
+    transform: translateY(1080px);
+    transition: transform 0 linear;
+    display: none;
+    opacity: 0;
+    font-size: 16px;
+}
+
+.page.active {
+    transform: translateY(0px);
+    transition: all 0.3s ease-out;
+    display: block;
+    opacity: 1;
+}
+
+/*.bottom::before {
+  display: table;
+  padding: 1em;
+  content: "";
+}*/
+
+.bottom {
+  position: absolute;
+  bottom: 0;
+}
+
+.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+
+.form-group {
+  margin: 0 0 0 0;
+}
+
+.form-group label.control-label {
+  margin: 8px 0 0 0;
+}
+
+.btn.btn-fab.main-button {
+  position: fixed;
+  bottom: 2em;
+  right: 2em;
+  z-index: 999;
+}
+
+#stats {
+  background: #E3F5FF;
+}
+
+#stats .gpa-total {
+    color: rgb(82, 101, 162);
+    font-size: 4em;
+    /*font-weight: normal;*/
+    /*margin-top: 5px;*/
+    /*margin-bottom: 60px;*/
+    /*letter-spacing: 1.20000004768372px;*/
+}
+
+@media(max-width: 768px) {
+  #stats .gpa-total {
+    font-size: 3em;
+  }
+}
+
+#stats .totals {
+  border-right: 2px dashed #ccc;
+}
+
+#stats div:nth-child(2) label {
+  font-size: 1.5em;
+}
