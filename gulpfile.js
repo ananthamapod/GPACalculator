@@ -23,20 +23,27 @@ const pump = require('pump')
 /******************************************************/
 
 /*********************** TASKS ************************/
-/* Path object for convenience */
-var paths = {
+/* Path objects for convenience */
+var srcs = {
   JSX: 'src/jsx/*.jsx',
   JS:  ['src/js'],
-  CSS: 'src/css/*.css'
+  CSS: ['src/css/*.css'],
+  HTML: ['src/*.html']
+}
+
+var dests = {
+  JS:  'build/js',
+  CSS: 'build/css',
+  HTML: 'build'
 }
 
 
 gulp.task('transform', function(cb) {
   pump(
     [
-      gulp.src(paths.JSX),
+      gulp.src(srcs.JSX),
       react(),
-      gulp.dest('build/js')
+      gulp.dest(dests.JS)
     ],
     cb
   )
@@ -46,19 +53,33 @@ gulp.task('transform', function(cb) {
 gulp.task('styles', function(cb) {
   pump(
     [
-      gulp.src(['./src/css/*.css']),
+      gulp.src(srcs.CSS),
         concat('style.css'),
         autoprefix('last 2 versions'),
         minifyCSS(),
-        gulp.dest('./build/css/')
+        gulp.dest(dests.CSS)
+    ],
+    cb
+  )
+})
+
+// minify new and changed HTML pages
+gulp.task('html', function(cb){
+  pump(
+    [
+      gulp.src(srcs.HTML),
+      changed(dests.HTML),
+      minifyHTML(),
+      gulp.dest(dests.HTML)
     ],
     cb
   )
 })
 
 gulp.task('watch', function(){
-  gulp.watch(paths.JSX, ['transform'])
-  gulp.watch(paths.CSS, ['styles'])
+  gulp.watch(srcs.JSX, ['transform'])
+  gulp.watch(srcs.CSS, ['styles'])
+  gulp.watch(srcs.HTML, ['html'])
 })
 
 
@@ -80,17 +101,6 @@ gulp.task('imagemin', function() {*/
     .pipe(changed(imgDst))
     .pipe(imagemin())
     .pipe(gulp.dest(imgDst));
-});
-
-// minify new and changed HTML pages
-gulp.task('htmlpage', function(){
-  var htmlSrc = './src/*.html';
-  var htmlDst = './build';
-
-  gulp.src(htmlSrc)
-    .pipe(changed(htmlDst))
-    .pipe(minifyHTML())
-    .pipe(gulp.dest(htmlDst));
 });
 
 // JS concat, strip debugging and minify
