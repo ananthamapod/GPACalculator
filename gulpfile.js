@@ -26,7 +26,8 @@ const pump = require('pump')
 /* Path object for convenience */
 var paths = {
   JSX: 'src/jsx/*.jsx',
-  JS:  ['src/js']
+  JS:  ['src/js'],
+  CSS: 'src/css/*.css'
 }
 
 
@@ -41,10 +42,23 @@ gulp.task('transform', function(cb) {
   )
 })
 
-
+// CSS concat, auto-prefix and minify
+gulp.task('styles', function(cb) {
+  pump(
+    [
+      gulp.src(['./src/css/*.css']),
+        concat('style.css'),
+        autoprefix('last 2 versions'),
+        minifyCSS(),
+        gulp.dest('./build/css/')
+    ],
+    cb
+  )
+})
 
 gulp.task('watch', function(){
   gulp.watch(paths.JSX, ['transform'])
+  gulp.watch(paths.CSS, ['styles'])
 })
 
 
@@ -86,15 +100,6 @@ gulp.task('scripts', function() {
     .pipe(stripDebug())
     .pipe(uglify())
     .pipe(gulp.dest('./build/js/'));
-})
-
-// CSS concat, auto-prefix and minify
-gulp.task('styles', function() {
-  gulp.src(['./src/css/*.css'])
-    .pipe(concat('styles.css'))
-    .pipe(autoprefix('last 2 versions') )
-    .pipe(minifyCSS())
-    .pipe(gulp.dest('./build/css/'));
 })
 
 /******************************************************
