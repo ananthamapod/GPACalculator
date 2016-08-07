@@ -158,15 +158,15 @@ var TotalStats = React.createClass({
 var GradeEntry = React.createClass({
   render: function() {
     return (
-      <div className="row">
+      <div className="row gradeentry">
         <div className="col-xs-2">
           <h3 className="text-center">{this.props.ind}</h3>
         </div>
         <div className="col-xs-5">
-          <h3 className="text-center">{this.props.credits}</h3>
+          <input className="center-block text-center" placeholder={this.props.credits} />
         </div>
         <div className="col-xs-5">
-          <h3 className="text-center">{this.props.grade}</h3>
+          <input className="center-block text-center" placeholder={this.props.grade} />
         </div>
       </div>
     )
@@ -177,7 +177,7 @@ var SemesterStats = React.createClass({
   render: function() {
     var putList = function(list) {
       return list.map(function(elem, ind) {
-          return <GradeEntry key={ind} ind={ind} credits={elem.credits} grade={elem.grade}/>
+          return <GradeEntry key={ind+1} ind={ind+1} credits={elem.credits} grade={elem.grade}/>
         })
     }
     return (
@@ -203,6 +203,7 @@ var SemesterStats = React.createClass({
                 <div className="block-bottom">
                   <button className="center-block btn btn-success pull-left">Add class</button>
                   <button className="center-block btn btn-danger pull-right">Remove semester</button>
+                  <div className="clearfix"></div>
                 </div>
               </div>
             </div>
@@ -237,7 +238,7 @@ var MainComponent = React.createClass({
     return (
       <div>
         <TotalStats gradings={this.state.gradings} totalStatState={this.state.totalStatState} />
-        <SemesterStats list={this.state.grades}/>
+        <SemesterStats list={this.state.grades} />
         <AddSemButton />
       </div>
     )

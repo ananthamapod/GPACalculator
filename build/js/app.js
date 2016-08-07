@@ -158,15 +158,15 @@ var TotalStats = React.createClass({displayName: "TotalStats",
 var GradeEntry = React.createClass({displayName: "GradeEntry",
   render: function() {
     return (
-      React.createElement("div", {className: "row"}, 
+      React.createElement("div", {className: "row gradeentry"}, 
         React.createElement("div", {className: "col-xs-2"}, 
           React.createElement("h3", {className: "text-center"}, this.props.ind)
         ), 
         React.createElement("div", {className: "col-xs-5"}, 
-          React.createElement("h3", {className: "text-center"}, this.props.credits)
+          React.createElement("input", {className: "center-block text-center", placeholder: this.props.credits})
         ), 
         React.createElement("div", {className: "col-xs-5"}, 
-          React.createElement("h3", {className: "text-center"}, this.props.grade)
+          React.createElement("input", {className: "center-block text-center", placeholder: this.props.grade})
         )
       )
     )
@@ -177,7 +177,7 @@ var SemesterStats = React.createClass({displayName: "SemesterStats",
   render: function() {
     var putList = function(list) {
       return list.map(function(elem, ind) {
-          return React.createElement(GradeEntry, {key: ind, ind: ind, credits: elem.credits, grade: elem.grade})
+          return React.createElement(GradeEntry, {key: ind+1, ind: ind+1, credits: elem.credits, grade: elem.grade})
         })
     }
     return (
@@ -202,7 +202,8 @@ var SemesterStats = React.createClass({displayName: "SemesterStats",
                 React.createElement("hr", {className: "thick-rule"}), 
                 React.createElement("div", {className: "block-bottom"}, 
                   React.createElement("button", {className: "center-block btn btn-success pull-left"}, "Add class"), 
-                  React.createElement("button", {className: "center-block btn btn-danger pull-right"}, "Remove semester")
+                  React.createElement("button", {className: "center-block btn btn-danger pull-right"}, "Remove semester"), 
+                  React.createElement("div", {className: "clearfix"})
                 )
               )
             )
