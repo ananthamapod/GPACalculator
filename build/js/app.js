@@ -3,61 +3,27 @@ function ClassGrade (credits, grade) {
   this.credits = credits || 0
 }
 
-var gradings = [
-  {
-    label: "A+",
-    value: 4.0
-  },
-  {
-    label: "A",
-    value: 4.0
-  },
-  {
-    label: "A-",
-    value: 3.7
-  },
-  {
-    label: "B+",
-    value: 3.3
-  },
-  {
-    label: "B",
-    value: 3.0
-  },
-  {
-    label: "B-",
-    value: 2.7
-  },
-  {
-    label: "C+",
-    value: 2.3
-  },
-  {
-    label: "C",
-    value: 2.0
-  },
-  {
-    label: "C-",
-    value: 1.7
-  },
-  {
-    label: "D+",
-    value: 1.3
-  },
-  {
-    label: "D",
-    value: 1.0
-  },
-  {
-    label: "F",
-    value: 0.0
-  }
-]
+var gradings = {
+  "A+": 4.0,
+  "A": 4.0,
+  "A-": 3.7,
+  "B+": 3.3,
+  "B": 3.0,
+  "B-": 2.7,
+  "C+": 2.3,
+  "C": 2.0,
+  "C-": 1.7,
+  "D+": 1.3,
+  "D": 1.0,
+  "F": 0.0
+}
 
 var totalStatState = {
   state: "Save",
   label: "Edit",
-  disabled: true
+  disabled: true,
+  gpaTotal: 4.0,
+  creditsTotal: 0
 }
 
 var GradeBreakdown = React.createClass({displayName: "GradeBreakdown",
@@ -87,26 +53,28 @@ var TotalStats = React.createClass({displayName: "TotalStats",
     currState.label = state
     currState.state = label
     currState.disabled = !currState.disabled
-    console.log(this.props.totalStatState)
     this.props.totalStatState = currState
+    this.props.updateGradings()
     this.forceUpdate()
   },
   createItems: function(gradings, disabled) {
     var rowList = []
     var colList = []
-    gradings.forEach(function(elem, ind, arr) {
+    var count = 0
+    for (var ind in gradings) {
       colList.push(
-        React.createElement(GradeBreakdown, {key: ind, label: elem.label, value: elem.value, disabled: disabled})
+        React.createElement(GradeBreakdown, {key: ind, label: ind, value: gradings[ind], disabled: disabled})
       )
-      if ((ind + 1) % 4 === 0) {
+      if ((count + 1) % 4 === 0) {
         rowList.push(
-          React.createElement("div", {key: (ind+1)/4, className: "row"}, 
+          React.createElement("div", {key: (count+1)/4, className: "row"}, 
           colList
           )
         )
         colList = []
       }
-    })
+      count++
+    }
     return React.createElement("div", null, rowList.map(function(elem) { return elem}))
   },
 
@@ -120,13 +88,13 @@ var TotalStats = React.createClass({displayName: "TotalStats",
                 React.createElement("div", {className: "row"}, 
                   React.createElement("div", {className: "totals col-xs-3"}, 
                     React.createElement("p", null, "Total GPA:"), 
-                    React.createElement("h4", {className: "gpa-total"}, "3.2"), 
+                    React.createElement("h4", {className: "gpa-total"}, this.props.totalStatState.gpaTotal.toFixed(1)), 
                     React.createElement("div", {className: "bottom row"}, 
                       React.createElement("div", {className: "col-xs-12 col-sm-6"}, 
                         React.createElement("p", {className: ""}, "Credits:")
                       ), 
                       React.createElement("div", {className: "col-xs-12 col-sm-6"}, 
-                        React.createElement("p", {className: ""}, "123")
+                        React.createElement("p", {className: ""}, this.props.totalStatState.creditsTotal)
                       )
                     )
                   ), 
@@ -217,7 +185,7 @@ var SemesterStats = React.createClass({displayName: "SemesterStats",
 var AddSemButton = React.createClass({displayName: "AddSemButton",
   render: function() {
     return (
-      React.createElement("a", {href: "javascript:void(0)", className: "btn btn-danger btn-fab main-button"}, 
+      React.createElement("a", {href: "javascript:void(0)", className: "btn btn-fab main-button"}, 
         React.createElement("i", {className: "material-icons", title: "Add semester"}, 
           "add"
         )
@@ -234,10 +202,16 @@ var MainComponent = React.createClass({displayName: "MainComponent",
       totalStatState: totalStatState
     }
   },
+  updateGradings: function() {
+    this.setState({called: true})
+  },
   render: function() {
     return (
       React.createElement("div", null, 
-        React.createElement(TotalStats, {gradings: this.state.gradings, totalStatState: this.state.totalStatState}), 
+        React.createElement(TotalStats, {
+          gradings: this.state.gradings, 
+          totalStatState: this.state.totalStatState, 
+          updateGradings: this.updateGradings}), 
         React.createElement(SemesterStats, {list: this.state.grades}), 
         React.createElement(AddSemButton, null)
       )
