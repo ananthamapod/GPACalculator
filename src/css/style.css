@@ -101,10 +101,23 @@
   }
 }
 
-#stats .totals {
-  border-right: 2px dashed #ccc;
-}
-
 #stats div:nth-child(2) label {
   font-size: 1.5em;
+}
+
+.block-bottom {
+  margin-bottom: 3em;
+}
+
+.thick-rule {
+  background: #666;
+  border: 1px solid #666;
+}
+
+.form-control {
+  text-align: "center";
+}
+
+.red-rule {
+  background: #c33;
 }
