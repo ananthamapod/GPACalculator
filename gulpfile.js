@@ -1,26 +1,55 @@
 /*********************** IMPORTS ***********************/
 
-// include gulp
-var gulp = require("gulp");
-
 // include plugins
-var jshint = require("gulp-jshint");
+const gulp = require('gulp')
+const react = require('gulp-react')
 
-var changed = require("gulp-changed");
-var imagemin = require("gulp-imagemin");
+const jshint = require("gulp-jshint")
 
-var minifyHTML = require("gulp-minify-html");
+const changed = require("gulp-changed")
+const imagemin = require("gulp-imagemin")
 
-var concat = require("gulp-concat");
-var stripDebug = require("gulp-strip-debug");
-var uglify = require("gulp-uglify");
+const minifyHTML = require("gulp-minify-html")
 
-var autoprefix = require("gulp-autoprefixer");
-var minifyCSS = require("gulp-minify-css");
+const concat = require("gulp-concat")
+const stripDebug = require("gulp-strip-debug")
+const uglify = require("gulp-uglify")
 
-/*******************************************************/
+const autoprefix = require("gulp-autoprefixer")
+const minifyCSS = require("gulp-minify-css")
 
-/*********************** TASKS *************************/
+const pump = require('pump')
+
+/******************************************************/
+
+/*********************** TASKS ************************/
+/* Path object for convenience */
+var paths = {
+  JSX: 'src/jsx/*.jsx',
+  JS:  ['src/js']
+}
+
+
+gulp.task('transform', function(cb) {
+  pump(
+    [
+      gulp.src(paths.JSX),
+      react(),
+      gulp.dest('build/js')
+    ],
+    cb
+  )
+})
+
+
+
+gulp.task('watch', function(){
+  gulp.watch(paths.JSX, ['transform'])
+})
+
+
+gulp.task('default', ['watch'])
+/*
 // JS hint task
 gulp.task('jshint', function() {
   gulp.src('./src/js/*.js')
@@ -29,9 +58,9 @@ gulp.task('jshint', function() {
 });
 
 // image minifying task
-gulp.task('imagemin', function() {
-  var imgSrc = './src/img/**/*';
-  var imgDst = './build/img';
+gulp.task('imagemin', function() {*/
+//  var imgSrc = './src/img/**/*';
+/*  var imgDst = './build/img';
 
   gulp.src(imgSrc)
     .pipe(changed(imgDst))
@@ -52,7 +81,7 @@ gulp.task('htmlpage', function(){
 
 // JS concat, strip debugging and minify
 gulp.task('scripts', function() {
-  gulp.src(['./src/js/lib.js','./build/js/'])
+  gulp.src(['./src/js/*.js'])
     .pipe(concat('script.js'))
     .pipe(stripDebug())
     .pipe(uglify())
@@ -61,14 +90,14 @@ gulp.task('scripts', function() {
 
 // CSS concat, auto-prefix and minify
 gulp.task('styles', function() {
-  gulp.src(['./src/stylesheets/*.css'])
+  gulp.src(['./src/css/*.css'])
     .pipe(concat('styles.css'))
-    .pipe(autoprefix('last 2 versions'))
+    .pipe(autoprefix('last 2 versions') )
     .pipe(minifyCSS())
-    .pipe(gulp.dest('./build/stylesheets/'));
+    .pipe(gulp.dest('./build/css/'));
 })
 
-/*******************************************************/
+/******************************************************
 
 // Bundle tasks
 // default gulp task
@@ -84,7 +113,8 @@ gulp.task('default', ['imagemin', 'htmlpage', 'scripts', 'styles'], function() {
   });
 
   // watch for CSS changes
-  gulp.watch('./src/stylesheets/*.css', function() {
+  gulp.watch('./src/css/*.css', function() {
     gulp.run('styles');
   });
 });
+*/
