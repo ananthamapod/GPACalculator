@@ -218,7 +218,7 @@ var SemesterStats = React.createClass({
 var AddSemButton = React.createClass({
   render: function() {
     return (
-      <a href="javascript:void(0)" className="btn btn-fab main-button">
+      <a href="javascript:void(0)" onClick={this.props.addNewSem} className="btn btn-fab main-button">
         <i className="material-icons" title="Add semester">
           add
         </i>
@@ -233,16 +233,24 @@ var MainComponent = React.createClass({
       gradings: gradings,
 
       semesters: [
-        {
-          classes: [new ClassGrade(),new ClassGrade(),new ClassGrade()],
-          totals: {
-            credits: 0,
-            gpa: 4.0
-          }
-        }
+        this.newSemester()
       ],
       totalStatState: totalStatState
     }
+  },
+  newSemester: function() {
+    return {
+      classes: [new ClassGrade(),new ClassGrade(),new ClassGrade()],
+      totals: {
+        credits: 0,
+        gpa: 4.0
+      }
+    }
+  },
+  addSemester: function() {
+    var semesters = this.state.semesters
+    semesters.push(this.newSemester())
+    this.setState({semesters: semesters})
   },
   updateTotalStatState: function(totalStatState) {
     this.setState({totalStatState: totalStatState})
@@ -270,7 +278,7 @@ var MainComponent = React.createClass({
           updateGradings={this.updateGradings}
           updateTotalStatState={this.updateTotalStatState} />
         <div>{makeSemesters(this.state.semesters)}</div>
-        <AddSemButton />
+        <AddSemButton addNewSem={this.addSemester} />
       </div>
     )
   }
