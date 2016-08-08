@@ -36,7 +36,7 @@ var GradeBreakdown = React.createClass({
               <label htmlFor="inputEmail" className="control-label">{this.props.label}</label>
             </div>
             <div className="col-md-6">
-              <input type="text" name={this.props.item} className="form-control" placeholder={this.props.value.toFixed(1)} disabled={this.props.disabled}/>
+              <input type="text" name={this.props.label} className="form-control" onChange={this.props.updateGrading} placeholder={this.props.value.toFixed(1)} disabled={this.props.disabled}/>
             </div>
           </div>
         </div>
@@ -46,16 +46,29 @@ var GradeBreakdown = React.createClass({
 })
 
 var TotalStats = React.createClass({
-  edit: function(e){
+  getInitialState: function() {
+    return {
+      gradings: {}
+    }
+  },
+  totalStatUpdate: function() {
     var currState = this.props.totalStatState
     var label = currState.label
     var state = currState.state
     currState.label = state
     currState.state = label
     currState.disabled = !currState.disabled
-    this.props.totalStatState = currState
-    this.props.updateGradings()
-    this.forceUpdate()
+    this.props.updateTotalStatState(currState)
+    if(state === "Edit") {
+      console.log("Getting updated now")
+      this.props.updateGradings(this.state.gradings)
+    }
+  },
+  updateGrading: function(e) {
+    var input = e.target;
+    var gradings = this.state.gradings
+    gradings[input.name] = input.value
+    this.setState({gradings: gradings})
   },
   createItems: function(gradings, disabled) {
     var rowList = []
@@ -63,7 +76,7 @@ var TotalStats = React.createClass({
     var count = 0
     for (var ind in gradings) {
       colList.push(
-        <GradeBreakdown key={ind} label={ind} value={gradings[ind]} disabled={disabled}/>
+        <GradeBreakdown key={ind} label={ind} value={gradings[ind]} updateGrading={this.updateGrading} disabled={disabled}/>
       )
       if ((count + 1) % 4 === 0) {
         rowList.push(
@@ -77,7 +90,6 @@ var TotalStats = React.createClass({
     }
     return <div>{rowList.map(function(elem) { return elem})}</div>
   },
-
   render: function() {
     return (
       <div className="row">
@@ -105,7 +117,7 @@ var TotalStats = React.createClass({
                             <p>Breakdown</p>
                         </div>
                         <div className="pull-right" id="edit-stats">
-                            <a className="btn btn-primary" onClick={this.edit}>{this.props.totalStatState.label}</a>
+                            <a className="btn btn-primary" onClick={this.totalStatUpdate}>{this.props.totalStatState.label}</a>
                         </div>
                       </div>
                     </div>
@@ -141,6 +153,24 @@ var GradeEntry = React.createClass({
   }
 })
 
+var TotalPerSem = React.createClass({
+  render: function() {
+    return (
+      <div className="row gradeentry">
+        <div className="col-xs-2">
+          <h3 className="text-center">total</h3>
+        </div>
+        <div className="col-xs-5">
+          <h3 className="center-block text-center">{this.props.credits}</h3>
+        </div>
+        <div className="col-xs-5">
+          <h3 className="center-block text-center">{this.props.grade}</h3>
+        </div>
+      </div>
+    )
+  }
+})
+
 var SemesterStats = React.createClass({
   render: function() {
     var putList = function(list) {
@@ -168,6 +198,9 @@ var SemesterStats = React.createClass({
                 <hr className="red-rule"/>
                 <div>{putList(this.props.list)}</div>
                 <hr className="thick-rule"/>
+                <div>
+                  <TotalPerSem credits={this.props.totals.credits} grade={this.props.totals.gpa.toFixed(1)}/>
+                </div>
                 <div className="block-bottom">
                   <button className="center-block btn btn-success pull-left">Add class</button>
                   <button className="center-block btn btn-danger pull-right">Remove semester</button>
@@ -198,21 +231,45 @@ var MainComponent = React.createClass({
   getInitialState: function() {
     return {
       gradings: gradings,
-      grades: [new ClassGrade(),new ClassGrade(),new ClassGrade()],
+
+      semesters: [
+        {
+          classes: [new ClassGrade(),new ClassGrade(),new ClassGrade()],
+          totals: {
+            credits: 0,
+            gpa: 4.0
+          }
+        }
+      ],
       totalStatState: totalStatState
     }
   },
-  updateGradings: function() {
-    this.setState({called: true})
+  updateTotalStatState: function(totalStatState) {
+    this.setState({totalStatState: totalStatState})
+  },
+  updateGradings: function(gradings) {
+    console.log("Let's see what the object looks like")
+    console.log(gradings)
+    var currGradings = this.state.gradings
+    for(grade in gradings) {
+      currGradings[grade] = +gradings[grade]
+    }
+    this.setState({gradings: currGradings})
   },
   render: function() {
+    var makeSemesters = function(semesters) {
+      return semesters.map(function(elem, ind) {
+        return <SemesterStats key={"sem-"+ind} list={elem.classes} totals={elem.totals} />
+      })
+    }
     return (
       <div>
         <TotalStats
           gradings={this.state.gradings}
           totalStatState={this.state.totalStatState}
-          updateGradings={this.updateGradings} />
-        <SemesterStats list={this.state.grades} />
+          updateGradings={this.updateGradings}
+          updateTotalStatState={this.updateTotalStatState} />
+        <div>{makeSemesters(this.state.semesters)}</div>
         <AddSemButton />
       </div>
     )
