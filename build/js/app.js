@@ -186,6 +186,12 @@ var SemesterStats = React.createClass({displayName: "SemesterStats",
   updateClass: function(classInd, update) {
     this.props.updateSem(this.props.ind, classInd, update)
   },
+  addClass: function() {
+    this.props.addClass(this.props.ind)
+  },
+  removeSem: function() {
+    this.props.removeSem(this.props.ind)
+  },
   render: function() {
     var self = this
     var putList = function(classes) {
@@ -217,8 +223,8 @@ var SemesterStats = React.createClass({displayName: "SemesterStats",
                   React.createElement(TotalPerSem, {credits: this.props.totals.credits, grade: this.props.totals.gpa.toFixed(1)})
                 ), 
                 React.createElement("div", {className: "block-bottom"}, 
-                  React.createElement("button", {className: "center-block btn btn-success pull-left"}, "Add class"), 
-                  React.createElement("button", {className: "center-block btn btn-danger pull-right"}, "Remove semester"), 
+                  React.createElement("button", {className: "center-block btn btn-success pull-left", onClick: this.addClass}, "Add class"), 
+                  React.createElement("button", {className: "center-block btn btn-danger pull-right", onClick: this.removeSem}, "Remove semester"), 
                   React.createElement("div", {className: "clearfix"})
                 )
               )
@@ -308,11 +314,29 @@ var MainComponent = React.createClass({displayName: "MainComponent",
     totals.creditsTotal = creditsTotal
     this.setState({totalStatState: totals})
   },
+  addClass: function(semInd) {
+    var sems = this.state.semesters
+    var currSem = sems[semInd]
+    currSem.classes.push(new ClassGrade())
+    this.setState({semesters: sems})
+  },
+  removeSem: function(semInd) {
+    var sems = this.state.semesters
+    sems.splice(semInd, 1)
+    this.setState({semesters: sems})
+  },
   render: function() {
     var self = this
     var makeSemesters = function(semesters) {
       return semesters.map(function(elem, ind) {
-        return React.createElement(SemesterStats, {updateSem: self.updateSem, key: "sem-"+ind, ind: ind, classes: elem.classes, totals: elem.totals})
+        return (React.createElement(SemesterStats, {
+          updateSem: self.updateSem, 
+          addClass: self.addClass, 
+          removeSem: self.removeSem, 
+          key: "sem-"+ind, 
+          ind: ind, 
+          classes: elem.classes, 
+          totals: elem.totals}))
       })
     }
     return (
