@@ -136,6 +136,12 @@ var TotalStats = React.createClass({displayName: "TotalStats",
 })
 
 var GradeEntry = React.createClass({displayName: "GradeEntry",
+  updateClass: function(e) {
+    var elem = e.target
+    var update = {}
+    update[elem.name] = elem.value
+    this.props.updateClass(this.props.ind-1, update)
+  },
   render: function() {
     return (
       React.createElement("div", {className: "row gradeentry"}, 
@@ -143,10 +149,10 @@ var GradeEntry = React.createClass({displayName: "GradeEntry",
           React.createElement("h3", {className: "text-center"}, this.props.ind)
         ), 
         React.createElement("div", {className: "col-xs-5"}, 
-          React.createElement("input", {className: "center-block text-center", placeholder: this.props.credits})
+          React.createElement("input", {name: "credits", className: "center-block text-center", onChange: this.updateClass, placeholder: this.props.credits})
         ), 
         React.createElement("div", {className: "col-xs-5"}, 
-          React.createElement("input", {className: "center-block text-center", placeholder: this.props.grade})
+          React.createElement("input", {name: "grade", className: "center-block text-center", onChange: this.updateClass, placeholder: this.props.grade})
         )
       )
     )
@@ -172,10 +178,19 @@ var TotalPerSem = React.createClass({displayName: "TotalPerSem",
 })
 
 var SemesterStats = React.createClass({displayName: "SemesterStats",
+  getInitialState: function() {
+    return {
+      classes: [new ClassGrade(),new ClassGrade(),new ClassGrade()]
+    }
+  },
+  updateClass: function(classInd, update) {
+    this.props.updateSem(this.props.ind, classInd, update)
+  },
   render: function() {
-    var putList = function(list) {
-      return list.map(function(elem, ind) {
-          return React.createElement(GradeEntry, {key: ind+1, ind: ind+1, credits: elem.credits, grade: elem.grade})
+    var self = this
+    var putList = function(classes) {
+      return classes.map(function(elem, ind) {
+          return React.createElement(GradeEntry, {key: ind+1, ind: ind+1, credits: elem.credits, updateClass: self.updateClass, grade: elem.grade})
         })
     }
     return (
@@ -196,7 +211,7 @@ var SemesterStats = React.createClass({displayName: "SemesterStats",
                   )
                 ), 
                 React.createElement("hr", {className: "red-rule"}), 
-                React.createElement("div", null, putList(this.props.list)), 
+                React.createElement("div", null, putList(this.props.classes)), 
                 React.createElement("hr", {className: "thick-rule"}), 
                 React.createElement("div", null, 
                   React.createElement(TotalPerSem, {credits: this.props.totals.credits, grade: this.props.totals.gpa.toFixed(1)})
@@ -256,18 +271,48 @@ var MainComponent = React.createClass({displayName: "MainComponent",
     this.setState({totalStatState: totalStatState})
   },
   updateGradings: function(gradings) {
-    console.log("Let's see what the object looks like")
-    console.log(gradings)
     var currGradings = this.state.gradings
     for(grade in gradings) {
       currGradings[grade] = +gradings[grade]
     }
     this.setState({gradings: currGradings})
   },
+  updateSem: function(ind, classInd, update) {
+    var self = this
+    var sems = this.state.semesters
+    var currSem = sems[ind]
+    var currClass = currSem.classes[classInd]
+    var credits = 0
+    var gpa = 0
+    for(var name in update) {
+      currClass[name] = update[name]
+    }
+    currSem.classes.forEach(function(elem) {
+      credits += +elem.credits
+      gpa += self.state.gradings[elem.grade] * elem.credits
+    })
+    gpa = (credits == 0? 4.0 : gpa * 1.0 / credits)
+    currSem.totals.credits = credits
+    currSem.totals.gpa = gpa
+    this.setState({semesters: sems})
+
+    var totals = this.state.totalStatState
+    var gpaTotal = 0
+    var creditsTotal = 0
+    sems.forEach(function(elem){
+      gpaTotal += elem.totals.gpa * elem.totals.credits
+      creditsTotal += elem.totals.credits
+    })
+    gpaTotal = (creditsTotal == 0? 4.0 : gpaTotal * 1.0 / creditsTotal)
+    totals.gpaTotal = gpaTotal
+    totals.creditsTotal = creditsTotal
+    this.setState({totalStatState: totals})
+  },
   render: function() {
+    var self = this
     var makeSemesters = function(semesters) {
       return semesters.map(function(elem, ind) {
-        return React.createElement(SemesterStats, {key: "sem-"+ind, list: elem.classes, totals: elem.totals})
+        return React.createElement(SemesterStats, {updateSem: self.updateSem, key: "sem-"+ind, ind: ind, classes: elem.classes, totals: elem.totals})
       })
     }
     return (
