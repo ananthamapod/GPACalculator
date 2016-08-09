@@ -280,7 +280,7 @@ var MainComponent = React.createClass({
   },
   updateGradings: function(gradings) {
     var currGradings = this.state.gradings
-    for(grade in gradings) {
+    for(var grade in gradings) {
       currGradings[grade] = +gradings[grade]
     }
     this.setState({gradings: currGradings})
