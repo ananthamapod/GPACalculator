@@ -1,3 +1,5 @@
+"use strict"
+
 function ClassGrade (credits, grade) {
   this.grade = grade || "A"
   this.credits = credits || 0
